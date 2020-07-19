@@ -1,0 +1,92 @@
+/*
+ *  Copyright 2014 The WebRTC Project Authors. All rights reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree. An additional intellectual property rights grant can be found
+ *  in the file PATENTS.  All contributing project authors may
+ *  be found in the AUTHORS file in the root of the source tree.
+ */
+
+package org.appspot.apprtc;
+
+import android.content.Context;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.support.annotation.Nullable;
+import android.util.Log;
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.appspot.apprtc.AppRTCClient.SignalingParameters;
+import org.appspot.apprtc.RecordedAudioToFileController;
+import org.webrtc.AudioSource;
+import org.webrtc.AudioTrack;
+import org.webrtc.CameraVideoCapturer;
+import org.webrtc.CandidatePairChangeEvent;
+import org.webrtc.DataChannel;
+import org.webrtc.DefaultVideoDecoderFactory;
+import org.webrtc.DefaultVideoEncoderFactory;
+import org.webrtc.EglBase;
+import org.webrtc.IceCandidate;
+import org.webrtc.Logging;
+import org.webrtc.MediaConstraints;
+import org.webrtc.MediaStream;
+import org.webrtc.MediaStreamTrack;
+import org.webrtc.PeerConnection;
+import org.webrtc.PeerConnection.IceConnectionState;
+import org.webrtc.PeerConnection.PeerConnectionState;
+import org.webrtc.PeerConnectionFactory;
+import org.webrtc.RtpParameters;
+import org.webrtc.RtpReceiver;
+import org.webrtc.RtpSender;
+import org.webrtc.RtpTransceiver;
+import org.webrtc.SdpObserver;
+import org.webrtc.SessionDescription;
+import org.webrtc.SoftwareVideoDecoderFactory;
+import org.webrtc.SoftwareVideoEncoderFactory;
+import org.webrtc.StatsObserver;
+import org.webrtc.StatsReport;
+import org.webrtc.SurfaceTextureHelper;
+import org.webrtc.VideoCapturer;
+import org.webrtc.VideoDecoderFactory;
+import org.webrtc.VideoEncoderFactory;
+import org.webrtc.VideoSink;
+import org.webrtc.VideoSource;
+import org.webrtc.VideoTrack;
+import org.webrtc.audio.AudioDeviceModule;
+import org.webrtc.audio.JavaAudioDeviceModule;
+import org.webrtc.audio.JavaAudioDeviceModule.AudioRecordErrorCallback;
+import org.webrtc.audio.JavaAudioDeviceModule.AudioRecordStateCallback;
+import org.webrtc.audio.JavaAudioDeviceModule.AudioTrackErrorCallback;
+import org.webrtc.audio.JavaAudioDeviceModule.AudioTrackStateCallback;
+
+/**
+ * Peer connection client implementation.
+ *
+ * <p>All public methods are routed to local looper thread.
+ * All PeerConnectionEvents callbacks are invoked from the same looper thread.
+ * This class is a singleton.
+ */
+public class PeerConnectionClient {
+  public static final String VIDEO_TRACK_ID = "ARDAMSv0";
+  public static final String AUDIO_TRACK_ID = "ARDAMSa0";
+  public static final String VIDEO_TRACK_TYPE = "video";
+  private static final String TAG = "PCRTCClient";
+  private sta

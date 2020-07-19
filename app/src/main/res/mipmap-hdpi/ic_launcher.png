@@ -1,0 +1,115 @@
+/*
+ *  Copyright 2016 The WebRTC Project Authors. All rights reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree. An additional intellectual property rights grant can be found
+ *  in the file PATENTS.  All contributing project authors may
+ *  be found in the AUTHORS file in the root of the source tree.
+ */
+
+package org.appspot.apprtc;
+
+import android.support.annotation.Nullable;
+import android.util.Log;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.nio.charset.Charset;
+import java.util.concurrent.ExecutorService;
+import org.webrtc.ThreadUtils;
+
+/**
+ * Replacement for WebSocketChannelClient for direct communication between two IP addresses. Handles
+ * the signaling between the two clients using a TCP connection.
+ * <p>
+ * All public methods should be called from a looper executor thread
+ * passed in a constructor, otherwise exception will be thrown.
+ * All events are dispatched on the same thread.
+ */
+public class TCPChannelClient {
+  private static final String TAG = "TCPChannelClient";
+
+  private final ExecutorService executor;
+  private final ThreadUtils.ThreadChecker executorThreadCheck;
+  private final TCPChannelEvents eventListener;
+  private TCPSocket socket;
+
+  /**
+   * Callback interface for messages delivered on TCP Connection. All callbacks are invoked from the
+   * looper executor thread.
+   */
+  public interface TCPChannelEvents {
+    void onTCPConnected(boolean server);
+    void onTCPMessage(String message);
+    void onTCPError(String description);
+    void onTCPClose();
+  }
+
+  /**
+   * Initializes the TCPChannelClient. If IP is a local IP address, starts a listening server on
+   * that IP. If not, instead connects to the IP.
+   *
+   * @param eventListener Listener that will receive events from the client.
+   * @param ip            IP address to listen on or connect to.
+   * @param port          Port to listen on or connect to.
+   */
+  public TCPChannelClient(
+      ExecutorService executor, TCPChannelEvents eventListener, String ip, int port) {
+    this.executor = executor;
+    executorThreadCheck = new ThreadUtils.ThreadChecker();
+    executorThreadCheck.detachThread();
+    this.eventListener = eventListener;
+
+    InetAddress address;
+    try {
+      address = InetAddress.getByName(ip);
+    } catch (UnknownHostException e) {
+      reportError("Invalid IP address.");
+      return;
+    }
+
+    if (address.isAnyLocalAddress()) {
+      socket = new TCPSocketServer(address, port);
+    } else {
+      socket = new TCPSocketClient(address, port);
+    }
+
+    socket.start();
+  }
+
+  /**
+   * Disconnects the client if not already disconnected. This will fire the onTCPClose event.
+   */
+  public void disconnect() {
+    executorThreadCheck.checkIsOnValidThread();
+
+    socket.disconnect();
+  }
+
+  /**
+   * Sends a message on the socket.
+   *
+   * @param message Message to be sent.
+   */
+  public void send(String message) {
+    executorThreadCheck.checkIsOnValidThread();
+
+    socket.send(message);
+  }
+
+  /**
+   * Helper method for firing onTCPError events. Calls onTCPError on the executor thread.
+   */
+  private void reportError(final String message) {
+    Log.e(TAG, "TCP Error: " + message);
+    executor.execute(new Runnable() {
+      @Override
+      public void run() {
+        eventListener.
