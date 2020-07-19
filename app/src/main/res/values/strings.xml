@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Hackathon</string>
-    <string name="directRecording">직접녹음</string>
+    <string name="saveMusic">음악목록</string>
     <string name="Recording">녹음</string>
-    <string name="oldMusic">옛음악</string>
+    <string name="oldMusic">전통음악</string>
+    <string name="heungMaker">\'흥興\' maker</string>
 </resources>
