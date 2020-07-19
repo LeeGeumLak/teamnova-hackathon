@@ -5,7 +5,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -19,8 +18,6 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 public class LoopStationActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -72,7 +69,9 @@ public class LoopStationActivity extends AppCompatActivity implements View.OnCli
                     buttonPlay.setBackgroundResource(R.drawable.pause);
                     playButtonPressed = 1;
 
-                    playAudio();
+                    //playAudio();
+
+
                 }
                 else {
                     buttonPlay.setBackgroundResource(R.drawable.play);
