@@ -25,6 +25,19 @@ public class MySoundPlayer {
     public static final int TRANSFERSTATION = R.raw.transfer_station;
     public static final int HEUNG = R.raw.heung;
 
+    public static final int BOOM = R.raw.boom;
+    public static final int BRIDGE = R.raw.bridge;
+    public static final int CLOSING = R.raw.dharan;
+    public static final int DOOMCHIT = R.raw.doom_chit;
+    public static final int DOOMDOOM = R.raw.doomdoom;
+    public static final int HORSE = R.raw.horse;
+    public static final int KOONGJAK = R.raw.koong_jak;
+    public static final int PPAXING = R.raw.ppaxing;
+    public static final int BEAT = R.raw.right_beat;
+    public static final int SHINDY = R.raw.shindy;
+    public static final int STRIONGBEAT = R.raw.strong_beat;
+    public static final int CLOSINGG = R.raw.closing;
+
     //오디오 리소스를 관리하고 재생하는 클래스
     private static SoundPool soundPool;
     //오디오 리소스를 담아누는 해쉬맵
@@ -44,11 +57,11 @@ public class MySoundPlayer {
                 .build();*/
 
         //maxStreams = 동시에 재생가능한 음원 수, streamType = 재생타입, srcQuality = 음악 재생 품질
-        soundPool = new SoundPool(8, AudioManager.STREAM_MUSIC, 0);
+        soundPool = new SoundPool(12, AudioManager.STREAM_MUSIC, 0);
 
         //음악을 미리 넣어둠
         //initalCapacty  = 초기 용량 지정
-        soundPoolMap = new HashMap(4);
+        soundPoolMap = new HashMap(24);
         soundPoolMap.put(HAEGEUM, soundPool.load(context, HAEGEUM, 1));
         soundPoolMap.put(KKWAENGGWARI, soundPool.load(context, KKWAENGGWARI, 1));
         soundPoolMap.put(PIPE, soundPool.load(context, PIPE, 1));
@@ -61,6 +74,19 @@ public class MySoundPlayer {
         soundPoolMap.put(TRANSFERPIPE, soundPool.load(context, TRANSFERPIPE, 1));
         soundPoolMap.put(TRANSFERSTATION, soundPool.load(context, TRANSFERSTATION, 1));
         soundPoolMap.put(HEUNG, soundPool.load(context, HEUNG, 1));
+
+        soundPoolMap.put(BOOM, soundPool.load(context, BOOM, 1));
+        soundPoolMap.put(BRIDGE, soundPool.load(context, BRIDGE, 1));
+        soundPoolMap.put(CLOSING, soundPool.load(context, CLOSING, 1));
+        soundPoolMap.put(DOOMCHIT, soundPool.load(context, DOOMCHIT, 1));
+        soundPoolMap.put(DOOMDOOM, soundPool.load(context, DOOMDOOM, 1));
+        soundPoolMap.put(HORSE, soundPool.load(context, HORSE, 1));
+        soundPoolMap.put(KOONGJAK, soundPool.load(context, KOONGJAK, 1));
+        soundPoolMap.put(PPAXING, soundPool.load(context, PPAXING, 1));
+        soundPoolMap.put(BEAT, soundPool.load(context, BEAT, 1));
+        soundPoolMap.put(SHINDY, soundPool.load(context, SHINDY, 1));
+        soundPoolMap.put(STRIONGBEAT, soundPool.load(context, STRIONGBEAT, 1));
+        soundPoolMap.put(CLOSINGG, soundPool.load(context, CLOSINGG, 1));
     }
 
     public static void play(int raw_id){

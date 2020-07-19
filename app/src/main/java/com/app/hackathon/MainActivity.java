@@ -3,14 +3,18 @@ package com.app.hackathon;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    String mode = "옛노래";
     Button oneBtn, twoBtn, threeBtn, fourBtn, fiveBtn, sixBtn, sevenBtn, eightBtn, nineBtn, tenBtn, elevenBtn, twelveBtn;
+    Button changeBeatBtn;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -30,90 +34,156 @@ public class MainActivity extends AppCompatActivity {
         tenBtn = findViewById(R.id.ten);
         elevenBtn = findViewById(R.id.eleven);
         twelveBtn = findViewById(R.id.twelve);
+        changeBeatBtn = findViewById(R.id.changeBeat);
+
+        //화면이 처음 켜졌을 때 로딩화면을 띄운다.
+        Intent intent = new Intent(this, LoadingActivity.class);
+        startActivity(intent);
 
         MySoundPlayer.initSounds(getApplicationContext());
 
         oneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySoundPlayer.play(MySoundPlayer.HAEGEUM);
+                if(mode.equals("옛노래")){
+                    MySoundPlayer.play(MySoundPlayer.HAEGEUM);
+                }else{
+                    MySoundPlayer.play(MySoundPlayer.BOOM);
+                }
             }
         });
 
         twoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySoundPlayer.play(MySoundPlayer.KKWAENGGWARI);
+                if(mode.equals("옛노래")){
+                    MySoundPlayer.play(MySoundPlayer.KKWAENGGWARI);
+                }else{
+                    MySoundPlayer.play(MySoundPlayer.BRIDGE);
+                }
             }
         });
 
         threeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySoundPlayer.play(MySoundPlayer.PIPE);
+                if(mode.equals("옛노래")){
+                    MySoundPlayer.play(MySoundPlayer.PIPE);
+                }else{
+                    MySoundPlayer.play(MySoundPlayer.CLOSING);
+                }
             }
         });
 
         fourBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySoundPlayer.play(MySoundPlayer.KOREADRUM);
+                if(mode.equals("옛노래")){
+                    MySoundPlayer.play(MySoundPlayer.KOREADRUM);
+                }else{
+                    MySoundPlayer.play(MySoundPlayer.DOOMCHIT);
+                }
             }
         });
 
         fiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySoundPlayer.play(MySoundPlayer.AJAENG);
+                if(mode.equals("옛노래")){
+                    MySoundPlayer.play(MySoundPlayer.AJAENG);
+                }else{
+                    MySoundPlayer.play(MySoundPlayer.DOOMDOOM);
+                }
             }
         });
 
         sixBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySoundPlayer.play(MySoundPlayer.GAYAGEUM);
+                if(mode.equals("옛노래")){
+                    MySoundPlayer.play(MySoundPlayer.GAYAGEUM);
+                }else{
+                    MySoundPlayer.play(MySoundPlayer.HORSE);
+                }
             }
         });
 
         sevenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySoundPlayer.play(MySoundPlayer.HMM);
+                if(mode.equals("옛노래")){
+                    MySoundPlayer.play(MySoundPlayer.HMM);
+                }else{
+                    MySoundPlayer.play(MySoundPlayer.KOONGJAK);
+                }
             }
         });
 
         eightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySoundPlayer.play(MySoundPlayer.JANGGU);
+                if(mode.equals("옛노래")){
+                    MySoundPlayer.play(MySoundPlayer.JANGGU);
+                }else{
+                    MySoundPlayer.play(MySoundPlayer.PPAXING);
+                }
             }
         });
 
         nineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySoundPlayer.play(MySoundPlayer.SONG);
+                if(mode.equals("옛노래")){
+                    MySoundPlayer.play(MySoundPlayer.SONG);
+                }else{
+                    MySoundPlayer.play(MySoundPlayer.BEAT);
+                }
             }
         });
 
         tenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySoundPlayer.play(MySoundPlayer.TRANSFERPIPE);
+                if(mode.equals("옛노래")){
+                    MySoundPlayer.play(MySoundPlayer.TRANSFERPIPE);
+                }else{
+                    MySoundPlayer.play(MySoundPlayer.SHINDY);
+                }
             }
         });
 
         elevenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySoundPlayer.play(MySoundPlayer.TRANSFERSTATION);
+                if(mode.equals("옛노래")){
+                    MySoundPlayer.play(MySoundPlayer.TRANSFERSTATION);
+                }else{
+                    MySoundPlayer.play(MySoundPlayer.STRIONGBEAT);
+                }
             }
         });
 
         twelveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySoundPlayer.play(MySoundPlayer.HEUNG);
+                if(mode.equals("옛노래")){
+                    MySoundPlayer.play(MySoundPlayer.HEUNG);
+                }else{
+                    MySoundPlayer.play(MySoundPlayer.CLOSINGG);
+                }
+            }
+        });
+
+        changeBeatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mode.equals("옛노래")){
+                    mode = "현대노래";
+                }else{
+                    mode = "옛노래";
+                }
+                changeBeatBtn.setText(mode);
+                Log.d("MainActivity", mode);
             }
         });
     }
