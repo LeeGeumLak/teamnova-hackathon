@@ -6,4 +6,201 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?android:attr/listChoiceIndicatorMultiple" />
+
+    <TableLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:stretchColumns="*"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton">
+
+        <TableRow
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="@string/directRecording"
+                android:textSize="24sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="녹음"
+                android:textSize="24sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="옛음악"
+                android:textSize="24sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="0dp"
+            android:layout_weight="5">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2pt"
+                android:layout_marginRight="1pt"
+                android:layout_marginBottom="1pt"
+                android:background="#adb5bd"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1pt"
+                android:layout_marginRight="1pt"
+                android:layout_marginBottom="1pt"
+                android:background="#adb5bd"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1pt"
+                android:layout_marginRight="2pt"
+                android:layout_marginBottom="1pt"
+                android:background="#adb5bd"
+                android:gravity="center"
+                android:textSize="24sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="0dp"
+            android:layout_weight="5">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2pt"
+                android:layout_marginTop="1pt"
+                android:layout_marginRight="1pt"
+                android:layout_marginBottom="1pt"
+                android:background="#adb5bd"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1pt"
+                android:layout_marginTop="1pt"
+                android:layout_marginRight="1pt"
+                android:layout_marginBottom="1pt"
+                android:background="#adb5bd"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1pt"
+                android:layout_marginTop="1pt"
+                android:layout_marginRight="2pt"
+                android:layout_marginBottom="1pt"
+                android:background="#adb5bd"
+                android:gravity="center"
+                android:textSize="24sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="0dp"
+            android:layout_weight="5">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2pt"
+                android:layout_marginTop="1pt"
+                android:layout_marginRight="1pt"
+                android:layout_marginBottom="1pt"
+                android:background="#adb5bd"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1pt"
+                android:layout_marginTop="1pt"
+                android:layout_marginRight="1pt"
+                android:layout_marginBottom="1pt"
+                android:background="#adb5bd"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1pt"
+                android:layout_marginTop="1pt"
+                android:layout_marginRight="2pt"
+                android:layout_marginBottom="1pt"
+                android:background="#adb5bd"
+                android:gravity="center"
+                android:textSize="24sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="0dp"
+            android:layout_weight="5">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2pt"
+                android:layout_marginTop="1pt"
+                android:layout_marginRight="1pt"
+                android:layout_marginBottom="1pt"
+                android:background="#adb5bd"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1pt"
+                android:layout_marginTop="1pt"
+                android:layout_marginRight="1pt"
+                android:layout_marginBottom="1pt"
+                android:background="#adb5bd"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1pt"
+                android:layout_marginTop="1pt"
+                android:layout_marginRight="2pt"
+                android:layout_marginBottom="1pt"
+                android:background="#adb5bd"
+                android:gravity="center"
+                android:textSize="24sp" />
+        </TableRow>
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
