@@ -9,11 +9,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    String mode = "옛노래";
-    Button oneBtn, twoBtn, threeBtn, fourBtn, fiveBtn, sixBtn, sevenBtn, eightBtn, nineBtn, tenBtn, elevenBtn, twelveBtn;
+    String mode = "전통음악";
+    ImageView musicIV;
+    ImageButton oneBtn, twoBtn, threeBtn, fourBtn, fiveBtn, sixBtn, sevenBtn, eightBtn, nineBtn, tenBtn, elevenBtn, twelveBtn;
     Button changeBeatBtn;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -35,17 +38,20 @@ public class MainActivity extends AppCompatActivity {
         elevenBtn = findViewById(R.id.eleven);
         twelveBtn = findViewById(R.id.twelve);
         changeBeatBtn = findViewById(R.id.changeBeat);
+        musicIV = findViewById(R.id.musicImage);
 
         //화면이 처음 켜졌을 때 로딩화면을 띄운다.
         Intent intent = new Intent(this, LoadingActivity.class);
         startActivity(intent);
+
+        oldMusicPicture();
 
         MySoundPlayer.initSounds(getApplicationContext());
 
         oneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
+                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.HAEGEUM);
                 }else{
                     MySoundPlayer.play(MySoundPlayer.BOOM);
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         twoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
+                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.KKWAENGGWARI);
                 }else{
                     MySoundPlayer.play(MySoundPlayer.BRIDGE);
@@ -67,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         threeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
+                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.PIPE);
                 }else{
                     MySoundPlayer.play(MySoundPlayer.CLOSING);
@@ -78,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         fourBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
+                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.KOREADRUM);
                 }else{
                     MySoundPlayer.play(MySoundPlayer.DOOMCHIT);
@@ -89,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         fiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
+                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.AJAENG);
                 }else{
                     MySoundPlayer.play(MySoundPlayer.DOOMDOOM);
@@ -100,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         sixBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
+                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.GAYAGEUM);
                 }else{
                     MySoundPlayer.play(MySoundPlayer.HORSE);
@@ -111,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         sevenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
+                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.HMM);
                 }else{
                     MySoundPlayer.play(MySoundPlayer.KOONGJAK);
@@ -122,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         eightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
+                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.JANGGU);
                 }else{
                     MySoundPlayer.play(MySoundPlayer.PPAXING);
@@ -133,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         nineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
+                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.SONG);
                 }else{
                     MySoundPlayer.play(MySoundPlayer.BEAT);
@@ -144,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         tenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
+                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.TRANSFERPIPE);
                 }else{
                     MySoundPlayer.play(MySoundPlayer.SHINDY);
@@ -155,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         elevenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
+                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.TRANSFERSTATION);
                 }else{
                     MySoundPlayer.play(MySoundPlayer.STRIONGBEAT);
@@ -166,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         twelveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
+                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.HEUNG);
                 }else{
                     MySoundPlayer.play(MySoundPlayer.CLOSINGG);
@@ -177,14 +183,34 @@ public class MainActivity extends AppCompatActivity {
         changeBeatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode.equals("옛노래")){
-                    mode = "현대노래";
+                if(mode.equals("전통음악")){
+                    changeBeatBtn.setText("현대음악");
+                    musicIV.setImageResource(R.drawable.img_music);
+                    mode = "현대음악";
                 }else{
                     mode = "옛노래";
+                    changeBeatBtn.setText("전통음악");
+                    oldMusicPicture();
+                    musicIV.setImageResource(R.drawable.img_jungganbo);
                 }
-                changeBeatBtn.setText(mode);
+
                 Log.d("MainActivity", mode);
             }
         });
+    }
+
+    private void oldMusicPicture(){
+        oneBtn.setImageResource(R.drawable.imgbtn_bibimbap);
+        twoBtn.setImageResource(R.drawable.imgbtn_building);
+        threeBtn.setImageResource(R.drawable.imgbtn_duck);
+        fourBtn.setImageResource(R.drawable.imgbtn_fan);
+        fiveBtn.setImageResource(R.drawable.imgbtn_ginseng);
+        sixBtn.setImageResource(R.drawable.imgbtn_gyeongbokgung_palace);
+        sevenBtn.setImageResource(R.drawable.imgbtn_harubang);
+        eightBtn.setImageResource(R.drawable.imgbtn_mask);
+        nineBtn.setImageResource(R.drawable.imgbtn_pagoda);
+        tenBtn.setImageResource(R.drawable.imgbtn_seoraksan);
+        elevenBtn.setImageResource(R.drawable.imgbtn_seoul_tower);
+        twelveBtn.setImageResource(R.drawable.imgbtn_shoes);
     }
 }
