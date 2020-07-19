@@ -1,9 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".LoopStationActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#f5f4f6"
+    android:padding="10dp" >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/topPart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:height="60dp"
+        android:gravity="start|top"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/goBack"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/back_arrow" />
+
+        <TextView
+            android:id="@+id/loopStationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loop Station"
+            android:textSize="30sp"
+            android:layout_marginLeft="60dp"
+            android:textColor="#000000"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/loopStationLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/loopStationContent_1"
+            android:layout_width="fill_parent"
+            android:layout_height="90dp"
+            android:text="Start recording"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:background="@drawable/border"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/loopStationContent_2"
+            android:layout_width="fill_parent"
+            android:layout_height="90dp"
+            android:text="Start recording"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:focusable="true"/>
+
+        <TextView
+            android:id="@+id/loopStationContent_3"
+            android:layout_width="fill_parent"
+            android:layout_height="90dp"
+            android:text="Start recording"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:focusable="true"/>
+
+        <TextView
+            android:id="@+id/loopStationContent_4"
+            android:layout_width="fill_parent"
+            android:layout_height="90dp"
+            android:text="Start recording"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:focusable="true"/>
+
+        <TextView
+            android:id="@+id/loopStationContent_5"
+            android:layout_width="fill_parent"
+            android:layout_height="90dp"
+            android:text="Start recording"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:focusable="true"/>
+
+        <TextView
+            android:id="@+id/loopStationContent_6"
+            android:layout_width="fill_parent"
+            android:layout_height="90dp"
+            android:text="Start recording"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:focusable="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/buttonPlay"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:focusable="true"
+            android:background="@drawable/play"/>
+
+        <Button
+            android:id="@+id/buttonStop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:focusable="true"
+            android:background="@drawable/stop"/>
+    </LinearLayout>
+
+</LinearLayout>
