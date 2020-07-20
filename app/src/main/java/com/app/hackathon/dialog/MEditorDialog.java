@@ -22,7 +22,7 @@ public class MEditorDialog extends MaterialDialog {
         return getInputEditText().getText();
     }
 
-    public static class Builder extends MDialogBuilder<Builder> {
+    public static class Builder extends MDialogBuilder<Builder>{
 
         public Builder(Context context) {
             super(context);

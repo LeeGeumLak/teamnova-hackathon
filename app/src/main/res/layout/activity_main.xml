@@ -30,18 +30,18 @@
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout">
 
-        <!--        <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/animationView"
-                    android:layout_weight="1"
-                    android:layout_height="50dp"
-                    android:layout_width="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:lottie_autoPlay="true"
-                    app:lottie_fileName="palm_dude.json"
-                    app:lottie_loop="true" />-->
+<!--        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="palm_dude.json"
+            app:lottie_loop="true" />-->
 
         <ImageView
             android:id="@+id/recordImage"
@@ -268,4 +268,20 @@
                 android:textSize="24sp" />
         </TableRow>
     </TableLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/stopRecordBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stop"
+            android:visibility="invisible"/>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
