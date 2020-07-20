@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
     String recordMode = "녹음전";
     ImageView musicIV, recordIV;
     ImageButton oneBtn, twoBtn, threeBtn, fourBtn, fiveBtn, sixBtn, sevenBtn, eightBtn, nineBtn, tenBtn, elevenBtn, twelveBtn;
-    Button changeBeatBtn, recordBtn, stopRecordBtn;
+    ImageButton stopRecordBtn;
+    Button changeBeatBtn, recordBtn;
 
     MediaRecorder recorder;
     MediaPlayer player;
