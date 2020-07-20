@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView musicIV, recordIV;
     ImageButton oneBtn, twoBtn, threeBtn, fourBtn, fiveBtn, sixBtn, sevenBtn, eightBtn, nineBtn, tenBtn, elevenBtn, twelveBtn;
     ImageButton stopRecordBtn;
-    Button changeBeatBtn, recordBtn;
+    Button changeBeatBtn, recordBtn, myMusicListBtn;
 
     MediaRecorder recorder;
     MediaPlayer player;
@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         recordBtn = findViewById(R.id.recordBtn);
         recordIV = findViewById(R.id.recordImage);
         stopRecordBtn = findViewById(R.id.stopRecordBtn);
+        myMusicListBtn = findViewById(R.id.myMusicListBtn);
 
         //화면이 처음 켜졌을 때 로딩화면을 띄운다.
         Intent intent = new Intent(this, LoadingActivity.class);
@@ -357,6 +358,15 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Log.d("MainActivity", mode);
+            }
+        });
+
+        // 음악목록 버튼
+        myMusicListBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyMusicListActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -98,7 +98,7 @@
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/chooseBeatBtn"
+                android:id="@+id/myMusicListBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
