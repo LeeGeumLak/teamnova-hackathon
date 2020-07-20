@@ -4,4 +4,5 @@
     <string name="Recording">녹음</string>
     <string name="oldMusic">전통음악</string>
     <string name="heungMaker">\'흥興\' maker</string>
+    <string name="stop">중지</string>
 </resources>
