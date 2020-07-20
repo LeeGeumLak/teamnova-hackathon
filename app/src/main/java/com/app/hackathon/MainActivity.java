@@ -198,12 +198,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         permissionCheck();
-        final File sdcard = Environment.getExternalStorageDirectory();
+        //원래 코드
+        //final File sdcard = Environment.getExternalStorageDirectory();
+
+        //수정 코드
+        final String externalStorageState = Environment.getExternalStorageState();
+        final File sdcard = new File(externalStorageState + "/hungmaker", "todolist");
 
         tenBtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 File file = new File(sdcard, "recorded1.mp4");
+
                 String filename = file.getAbsolutePath();
                 Log.d("MainActivity", "저장할 파일 명 : " + filename);
                 recordAudio(filename);
