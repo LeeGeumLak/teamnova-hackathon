@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.hackathon.util.AppContext;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 public class MyMusicListAdapter extends RecyclerView.Adapter<MyMusicListAdapter.ViewHolder> {
     private ArrayList<MyMusicData> mData = null;
-    Context mContext;
+    private Context mContext;
 
     // 생성자에서 데이터 리스트 객체를 전달받음.
     MyMusicListAdapter(ArrayList<MyMusicData> list) {
@@ -33,11 +34,13 @@ public class MyMusicListAdapter extends RecyclerView.Adapter<MyMusicListAdapter.
     }
 
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
+    @NonNull
     @Override
     public MyMusicListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        assert inflater != null;
         View view = inflater.inflate(R.layout.item_my_music, parent, false);
         MyMusicListAdapter.ViewHolder vh = new MyMusicListAdapter.ViewHolder(view);
 
@@ -65,6 +68,7 @@ public class MyMusicListAdapter extends RecyclerView.Adapter<MyMusicListAdapter.
         TextView tvMusicName;
 
         MediaPlayer player;
+        private int position = 0;
 
         String playMode = "재생전";
 
@@ -75,14 +79,15 @@ public class MyMusicListAdapter extends RecyclerView.Adapter<MyMusicListAdapter.
             playImgBtn = itemView.findViewById(R.id.playImgBtn) ;
             tvMusicName = itemView.findViewById(R.id.tvMusicName) ;
 
-            playImgBtn.setImageResource(R.drawable.play);
+            //playImgBtn.setImageResource(R.drawable.play);
 
-            final File sdcard = AppContext.getAudioTempPath();
+            final File sdcard = AppContext.getAudioOutPath();
             playImgBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(playMode.equals("재생전")){
                         int pos = getAdapterPosition();
+
                         playImgBtn.setImageResource(R.drawable.pause);
 
                         if (pos != RecyclerView.NO_POSITION) {
@@ -98,7 +103,7 @@ public class MyMusicListAdapter extends RecyclerView.Adapter<MyMusicListAdapter.
                         playMode = "재생중";
                     }else{
                         playMode = "재생전";
-                        playImgBtn.setImageResource(R.drawable.play);
+                        //playImgBtn.setImageResource(R.drawable.play);
                     }
 
                 }
@@ -118,6 +123,31 @@ public class MyMusicListAdapter extends RecyclerView.Adapter<MyMusicListAdapter.
             }
         }
 
+        private void pauseAudio() {
+            if (player != null) {
+                position = player.getCurrentPosition();
+                player.pause();
+
+                Toast.makeText(mContext, "일시정지됨.", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        private void resumeAudio() {
+            if (player != null && !player.isPlaying()) {
+                player.seekTo(position);
+                player.start();
+
+                Toast.makeText(mContext, "재시작됨.", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        private void stopAudio() {
+            if (player != null && player.isPlaying()) {
+                player.stop();
+
+                Toast.makeText(mContext, "중지됨.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 }

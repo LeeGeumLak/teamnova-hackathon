@@ -1,14 +1,21 @@
 package com.app.hackathon;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
+import android.widget.Filter;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.app.hackathon.util.AppContext;
+
+import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MyMusicListActivity extends AppCompatActivity {
     ImageButton backImgBtn;
@@ -38,8 +45,21 @@ public class MyMusicListActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        addItem("내가 만든 흥나는 음악", "recorded2.mp4");
-        addItem("우리 어떻게 해야 하지?", "recorded3.mp4");
+        //addItem("내가 만든 흥나는 음악", "recorded2.mp4");
+        //addItem("우리 어떻게 해야 하지?", "recorded3.mp4");
+
+        String path = AppContext.getAudioOutPath().toString();
+        File audioFile = new File(path);
+        File[] audioFiles = audioFile.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().toLowerCase(Locale.US).endsWith(".mp3"); //확장자
+            }
+        });
+
+        for(int i = 0; i < audioFiles.length; i++) {
+            addItem(audioFiles[i].getName(), audioFiles[i].getName());
+        }
 
         mAdapter.notifyDataSetChanged();
     }
