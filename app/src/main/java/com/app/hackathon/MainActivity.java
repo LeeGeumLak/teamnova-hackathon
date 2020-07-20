@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
         oldMusicPicture();
+        pleaseRecodeButtonImage();
 
         MySoundPlayer.initSounds(getApplicationContext());
 
@@ -218,8 +219,11 @@ public class MainActivity extends AppCompatActivity {
         //final File sdcard = Environment.getExternalStorageDirectory();
 
         //수정 코드
-        final String externalStorageState = Environment.getExternalStorageState();
-        final File sdcard = new File(externalStorageState + "/hungmaker", "todolist");
+        final File sdcard = AppContext.getAudioTempPath();
+        //final File sdcard = new File(AudioTempPath);
+
+        //final String externalStorageState = Environment.getExternalStorageState();
+        //final File sdcard = new File(externalStorageState , "heungMaster");
 
         tenBtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -229,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 String filename = file.getAbsolutePath();
                 Log.d("MainActivity", "저장할 파일 명 : " + filename);
                 recordAudio(filename);
+                tenBtn.setImageResource(R.drawable.sing);
                 stopRecordBtn.setVisibility(View.VISIBLE);
 
                 return false;
@@ -241,6 +246,7 @@ public class MainActivity extends AppCompatActivity {
                 File file = new File(sdcard, "recorded1.mp4");
                 String filename = file.getAbsolutePath();
                 Log.d("MainActivity", "불러올 파일 명 : " + filename);
+
                 playAudio(filename);
 
 /*                if(mode.equals("전통음악")){
@@ -258,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
                 String filename = file.getAbsolutePath();
                 Log.d("MainActivity", "저장할 파일 명 : " + filename);
                 recordAudio(filename);
+                elevenBtn.setImageResource(R.drawable.sing);
                 stopRecordBtn.setVisibility(View.VISIBLE);
 
                 return false;
@@ -287,6 +294,7 @@ public class MainActivity extends AppCompatActivity {
                 String filename = file.getAbsolutePath();
                 Log.d("MainActivity", "저장할 파일 명 : " + filename);
                 recordAudio(filename);
+                twelveBtn.setImageResource(R.drawable.sing);
                 stopRecordBtn.setVisibility(View.VISIBLE);
 
                 return false;
@@ -300,7 +308,6 @@ public class MainActivity extends AppCompatActivity {
                 String filename = file.getAbsolutePath();
                 Log.d("MainActivity", "불러올 파일 명 : " + filename);
                 playAudio(filename);
-
 /*                if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.HEUNG);
                 }else{
@@ -334,7 +341,6 @@ public class MainActivity extends AppCompatActivity {
 
                     isRecording = false;
                     //isPlayLoop = false;
-
                     onExpertAudio();
                 }
 
@@ -382,6 +388,7 @@ public class MainActivity extends AppCompatActivity {
             recordingAudioFile = new File(filePathName);
             recordingTrackHolder = new TrackHolder(recordingAudioFile);
             trackHolderList.add(recordingTrackHolder);
+
         }
         else {
             Log.d("MainActivity", "녹음중 아님");
@@ -441,15 +448,16 @@ public class MainActivity extends AppCompatActivity {
 
             for (int i = 0, size = audioFiles.length; i != size; i++) {
                 audioFiles[i] = trackHolderList.get(i).audioFile;
+                Log.d("MainActivity", String.valueOf(audioFiles[i]));
             }
 
             try {
                 Log.d("MainActivity", "try mix");
 
                 Log.d("MainActivity", "임시 파일 생성");
-
                 File tempMixAudioFile = new File(AppContext.getAudioTempPath(), UUID.randomUUID().toString());
                 Log.d("MainActivity", tempMixAudioFile.toString());
+
 
                 // TODO : 시스템 에러 발생
                 final FileOutputStream mixTempOutStream = new FileOutputStream(tempMixAudioFile);
@@ -459,13 +467,14 @@ public class MainActivity extends AppCompatActivity {
                 audioMixer.setOnAudioMixListener(new MultiAudioMixer.OnAudioMixListener() {
                     @Override
                     public void onMixing(byte[] mixBytes) throws IOException {
-                        mixTempOutStream.write(mixBytes);
+                        //mixTempOutStream.write(mixBytes);
+                        Log.d("MainActivity", String.valueOf(mixBytes));
                         Log.d("MainActivity", "onMixing");
                     }
 
                     @Override
                     public void onMixError(int errorCode) {
-                        Log.d("MainActivity", "onMixError");
+                        Log.d("MainActivity", "onMixError" + errorCode);
                     }
 
                     @Override
@@ -475,17 +484,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+/*                recordPcmAudioFile = new PCMAnalyser(100,1,64);
+
                 audioMixer.mixAudios(audioFiles, recordPcmAudioFile.bytesPerSample());
                 Log.d("MainActivity", "audioMixer");
+                Log.d("MainActivity", recordPcmAudioFile.bytesPerSample());*/
 
-                mixTempOutStream.close();
+/*                mixTempOutStream.close();
 
                 File outputFile = new File(AppContext.getAudioOutPath(), project.getName() + "1.mp3");
                 int channelCount = trackHolderList.size();
                 AudioEncoder accEncoder = AudioEncoder.createAccEncoder(tempMixAudioFile, channelCount);
                 accEncoder.encodeToFile(outputFile);
 
-                Log.d("MainActivity", "file encode and save");
+                Log.d("MainActivity", "file encode and save");*/
 
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -518,9 +530,7 @@ public class MainActivity extends AppCompatActivity {
         sevenBtn.setImageResource(R.drawable.imgbtn_harubang);
         eightBtn.setImageResource(R.drawable.imgbtn_mask);
         nineBtn.setImageResource(R.drawable.imgbtn_pagoda);
-        tenBtn.setImageResource(R.drawable.imgbtn_seoraksan);
-        elevenBtn.setImageResource(R.drawable.imgbtn_seoul_tower);
-        twelveBtn.setImageResource(R.drawable.imgbtn_shoes);
+
     }
 
     private void modernMusicPicture(){
@@ -546,9 +556,12 @@ public class MainActivity extends AppCompatActivity {
         sevenBtn.setImageResource(0);
         eightBtn.setImageResource(0);
         nineBtn.setImageResource(0);
-        tenBtn.setImageResource(0);
-        elevenBtn.setImageResource(0);
-        twelveBtn.setImageResource(0);
+    }
+
+    private void pleaseRecodeButtonImage(){
+        tenBtn.setImageResource(R.drawable.buttontext);
+        elevenBtn.setImageResource(R.drawable.buttontext);
+        twelveBtn.setImageResource(R.drawable.buttontext);
     }
 
     private void recordAudio(String filename) {
@@ -592,7 +605,7 @@ public class MainActivity extends AppCompatActivity {
             player.prepare();
             player.start();
 
-            Toast.makeText(this, "재생 시작됨.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "재생 시작됨.", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
         }

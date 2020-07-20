@@ -239,6 +239,7 @@
                 android:layout_marginTop="1pt"
                 android:layout_marginRight="1pt"
                 android:layout_marginBottom="2pt"
+                android:scaleType="centerInside"
                 android:background="@drawable/buttonimage"
                 android:gravity="center"
                 android:textSize="24sp" />
@@ -251,6 +252,7 @@
                 android:layout_marginTop="1pt"
                 android:layout_marginRight="1pt"
                 android:layout_marginBottom="2pt"
+                android:scaleType="centerInside"
                 android:background="@drawable/buttonimage"
                 android:gravity="center"
                 android:textSize="24sp" />
@@ -263,6 +265,7 @@
                 android:layout_marginTop="1pt"
                 android:layout_marginRight="2pt"
                 android:layout_marginBottom="2pt"
+                android:scaleType="centerInside"
                 android:background="@drawable/buttonimage"
                 android:gravity="center"
                 android:textSize="24sp" />

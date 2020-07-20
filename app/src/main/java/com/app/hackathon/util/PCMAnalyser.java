@@ -29,7 +29,7 @@ public class PCMAnalyser {
     private double mMaxFrameValue;
     private int mBytesPerSecond;
 
-    PCMAnalyser(int sampleRate, int channelCount, int bitDepth){
+    public PCMAnalyser(int sampleRate, int channelCount, int bitDepth){
         mSampleRate = sampleRate;
         mChannelCount = channelCount;
         mBytesPerSample = mChannelCount * bitDepth / 8;
