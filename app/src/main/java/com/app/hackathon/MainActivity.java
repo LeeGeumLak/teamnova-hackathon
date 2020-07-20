@@ -1,16 +1,26 @@
 package com.app.hackathon;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.app.hackathon.dialog.MLoadingDialog;
 import com.app.hackathon.util.AppContext;
@@ -25,9 +35,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private PCMAnalyser recordPcmAudioFile;
     private MLoadingDialog saveRecordedFileDialog;
     private Project project;
+    private File myDir;
 
     // 녹음중에 클릭한 음악 파일
     private File recordingAudioFile;
@@ -76,10 +91,11 @@ public class MainActivity extends AppCompatActivity {
         recordBtn = findViewById(R.id.recordBtn);
         recordIV = findViewById(R.id.recordImage);
 
-
         //화면이 처음 켜졌을 때 로딩화면을 띄운다.
         Intent intent = new Intent(this, LoadingActivity.class);
         startActivity(intent);
+
+        requestPermission();
 
         oldMusicPicture();
 
@@ -286,6 +302,79 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void requestPermission() {
+        boolean shouldProviceRationale =
+                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE);//사용자가 이전에 거절한적이 있어도 true 반환
+
+        if (shouldProviceRationale) {
+            //앱에 필요한 권한이 없어서 권한 요청
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        } else {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            //권한있을때.
+            //오레오부터 꼭 권한체크내에서 파일 만들어줘야함
+            makeDir();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //권한 허용 선택시
+                    //오레오부터 꼭 권한체크내에서 파일 만들어줘야함
+                    makeDir();
+                } else {
+                    //사용자가 권한 거절시
+                    denialDialog();
+                }
+                return;
+            }
+        }
+    }
+
+    public void denialDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("알림")
+                .setMessage("저장소 권한이 필요합니다. 환경 설정에서 저장소 권한을 허가해주세요.")
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package",
+                                BuildConfig.APPLICATION_ID, null);
+                        intent.setData(uri);
+                        intent.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent); //확인버튼누르면 바로 어플리케이션 권한 설정 창으로 이동하도록
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    public void makeDir() {
+        String root = Environment.getExternalStorageDirectory().getAbsolutePath(); //내장에 만든다
+        String directoryName = "HeungMaker";
+        myDir = new File(root + "/" + directoryName);
+        if (!myDir.exists()) {
+            boolean wasSuccessful = myDir.mkdir();
+            if (!wasSuccessful) {
+                System.out.println("file: was not successful.");
+            } else {
+                System.out.println("file: 최초로 앨범파일만듬." + root + "/" + directoryName);
+            }
+        } else {
+            System.out.println("file: " + root + "/" + directoryName +"already exists");
+        }
+    }
+
     // 레코드 버튼 리스너
     public void recordBtnListener(String filePathName) {
         boolean isRemoved = false;
@@ -379,10 +468,10 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Log.d("MainActivity", "try mix");
 
+                Log.d("MainActivity", "임시 파일 생성");
 
                 File tempMixAudioFile = new File(AppContext.getAudioTempPath(), UUID.randomUUID().toString());
-
-                Log.d("MainActivity", "임시 파일 생성");
+                Log.d("MainActivity", tempMixAudioFile.toString());
 
                 // TODO : 시스템 에러 발생
                 final FileOutputStream mixTempOutStream = new FileOutputStream(tempMixAudioFile);
