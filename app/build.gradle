@@ -31,7 +31,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'com.airbnb.android:lottie:3.4.0'
+    implementation 'com.airbnb.android:lottie:3.4.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.0.1'
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'com.mcxiaoke.packer-ng:helper:2.0.0'

@@ -30,18 +30,18 @@
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout">
 
-<!--        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationView"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:layout_width="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="palm_dude.json"
-            app:lottie_loop="true" />-->
+        <!--        <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationView"
+                    android:layout_weight="1"
+                    android:layout_height="50dp"
+                    android:layout_width="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="palm_dude.json"
+                    app:lottie_loop="true" />-->
 
         <ImageView
             android:id="@+id/recordImage"
@@ -272,9 +272,12 @@
         </TableRow>
     </TableLayout>
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/RecordingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#56000000"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -284,8 +287,24 @@
             android:id="@+id/stopRecordBtn"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:visibility="invisible"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/stop"/>
-    </FrameLayout>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/stop" />
+
+        <TextView
+            android:id="@+id/stopRecordText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15sp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:text="녹음을 중지하려면 버튼을 누르세요"
+            app:layout_constraintTop_toBottomOf="@id/stopRecordBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

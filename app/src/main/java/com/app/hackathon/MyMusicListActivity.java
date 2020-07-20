@@ -57,10 +57,10 @@ public class MyMusicListActivity extends AppCompatActivity {
             }
         });
 
-        addItem("심심할때 만든 노래", "");
-        addItem("코로나를 날릴 흥겨운 노래", "");
-        addItem("옛날 노래, 흥겨운 노래", "");
-        addItem("신난다~~~~", "");
+        addItem("심심할때 만든 노래.mp3", "");
+        addItem("코로나를 날릴 흥겨운 노래.mp3", "");
+        addItem("옛날 노래, 흥겨운 노래.mp3", "");
+        addItem("신난다아아아아아아아.mp3", "");
 
         for(int i = 0; i < audioFiles.length; i++) {
             addItem(audioFiles[i].getName(), audioFiles[i].getName());

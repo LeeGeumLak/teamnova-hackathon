@@ -1,13 +1,13 @@
 package com.app.hackathon;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -36,15 +35,15 @@ public class MainActivity extends AppCompatActivity {
 
     String mode = "전통음악";
     String recordMode = "녹음전";
+    int recodeButtonNum;
     ImageView musicIV, recordIV;
     ImageButton oneBtn, twoBtn, threeBtn, fourBtn, fiveBtn, sixBtn, sevenBtn, eightBtn, nineBtn, tenBtn, elevenBtn, twelveBtn;
-    ImageButton stopRecordBtn;
     Button changeBeatBtn, recordBtn, myMusicListBtn;
+    ImageButton stopRecordBtn;
+    ConstraintLayout recordingLayout;
 
     MediaRecorder recorder;
     MediaPlayer player;
-
-    EditText et;
 
     //private ArrayList<TrackHolder> trackHolderList = new ArrayList<>();
     //private TrackHolder recordingTrackHolder;
@@ -83,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         recordBtn = findViewById(R.id.recordBtn);
         recordIV = findViewById(R.id.recordImage);
         stopRecordBtn = findViewById(R.id.stopRecordBtn);
+        recordingLayout = findViewById(R.id.RecordingLayout);
         myMusicListBtn = findViewById(R.id.myMusicListBtn);
 
         //화면이 처음 켜졌을 때 로딩화면을 띄운다.
@@ -221,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
                 String filename = file.getAbsolutePath();
                 Log.d("MainActivity", "저장할 파일 명 : " + filename);
                 recordAudio(filename);
-                stopRecordBtn.setVisibility(View.VISIBLE);
-                tenBtn.setImageResource(R.drawable.sing);
+                recordingLayout.setVisibility(View.VISIBLE);
+                recodeButtonNum = 1;
 
                 return false;
             }
@@ -251,8 +251,8 @@ public class MainActivity extends AppCompatActivity {
                 String filename = file.getAbsolutePath();
                 Log.d("MainActivity", "저장할 파일 명 : " + filename);
                 recordAudio(filename);
-                stopRecordBtn.setVisibility(View.VISIBLE);
-                elevenBtn.setImageResource(R.drawable.sing);
+                recordingLayout.setVisibility(View.VISIBLE);
+                recodeButtonNum = 2;
 
                 return false;
             }
@@ -281,8 +281,8 @@ public class MainActivity extends AppCompatActivity {
                 String filename = file.getAbsolutePath();
                 Log.d("MainActivity", "저장할 파일 명 : " + filename);
                 recordAudio(filename);
-                stopRecordBtn.setVisibility(View.VISIBLE);
-                twelveBtn.setImageResource(R.drawable.sing);
+                recordingLayout.setVisibility(View.VISIBLE);
+                recodeButtonNum = 3;
                 return false;
             }
         });
@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
         stopRecordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stopRecordBtn.setVisibility(View.INVISIBLE);
+                recordingLayout.setVisibility(View.INVISIBLE);
                 stopRecording();
             }
         });
@@ -319,6 +319,7 @@ public class MainActivity extends AppCompatActivity {
                     recordIV.setImageResource(R.drawable.after_record);
                     recordMode = "녹음중";
 
+                    recodeButtonNum = 0;
                     //isRecording = true;
                     //isPlayLoop = true;
 
@@ -326,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
                     String timeStamp = new SimpleDateFormat("yyyyMMdd_HH.mm.ss").format(new Date());
 
                     File output = AppContext.getAudioOutPath();
+
                     File file;
                     if(mode.equals("현대음악")) {
                         file = new File(output, "내가 만든 신나는 음악.mp3");
@@ -333,8 +335,6 @@ public class MainActivity extends AppCompatActivity {
                     else {
                         file = new File(output, "내가 만든 흥나는 음악.mp3");
                     }
-
-//                    File file = new File(output, "Output_" + timeStamp + ".mp3");
                     String filename = file.getAbsolutePath();
                     Log.d("MainActivity", "저장할 파일 명 : " + filename);
                     recordAudio(filename);
@@ -348,42 +348,9 @@ public class MainActivity extends AppCompatActivity {
                     //onExpertAudio();
 
                     stopRecording();
-
-                    /*AlertDialog.Builder ad = new AlertDialog.Builder(MainActivity.this);
-
-                    ad.setTitle("원하시는 파일 이름을 입력하세요");       // 제목 설정
-                    ad.setMessage("입력하지 않으면, 날짜/시간으로 이름이 정해집니다.");
-                    // EditText 삽입하기
-                    et = new EditText(MainActivity.this);
-                    ad.setView(et);
-
-                    // 확인 버튼 설정
-                    ad.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            // Text 값 받아서 로그 남기기
-                            String value = et.getText().toString();
-
-                            dialog.dismiss();     //닫기
-                            // Event
-
-                            Toast.makeText(MainActivity.this, "'" + et.getText() + "' 으로 설정완료", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    // 취소 버튼 설정
-                    ad.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();     //닫기
-
-                            Toast.makeText(MainActivity.this, "날짜/시간으로 이름이 정해집니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    // 창 띄우기
-                    ad.show();*/
                 }
+
+                Log.d("MainActivity", recordMode);
             }
         });
 
@@ -623,15 +590,15 @@ public class MainActivity extends AppCompatActivity {
         elevenBtn.setBackgroundColor(getResources().getColor(R.color.modernPink));
         twelveBtn.setBackgroundColor(getResources().getColor(R.color.modernBlue));
 
-        oneBtn.setImageResource(0);
-        twoBtn.setImageResource(0);
-        threeBtn.setImageResource(0);
-        fourBtn.setImageResource(0);
-        fiveBtn.setImageResource(0);
-        sixBtn.setImageResource(0);
-        sevenBtn.setImageResource(0);
-        eightBtn.setImageResource(0);
-        nineBtn.setImageResource(0);
+        oneBtn.setImageResource(R.drawable.white);
+        twoBtn.setImageResource(R.drawable.white);
+        threeBtn.setImageResource(R.drawable.white);
+        fourBtn.setImageResource(R.drawable.white);
+        fiveBtn.setImageResource(R.drawable.white);
+        sixBtn.setImageResource(R.drawable.white);
+        sevenBtn.setImageResource(R.drawable.white);
+        eightBtn.setImageResource(R.drawable.white);
+        nineBtn.setImageResource(R.drawable.white);
     }
 
     private void pleaseRecodeButtonImage(){
@@ -650,8 +617,8 @@ public class MainActivity extends AppCompatActivity {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC); // 어디에서 음성 데이터를 받을 것인지
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4); // 압축 형식 설정
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        recorder.setOutputFile(filename);
 
+        recorder.setOutputFile(filename);
 
         try {
             recorder.prepare();
@@ -669,6 +636,17 @@ public class MainActivity extends AppCompatActivity {
             recorder.release();
             recorder = null;
             Toast.makeText(this, "녹음 중지됨.", Toast.LENGTH_SHORT).show();
+
+            if(recodeButtonNum == 1){
+                tenBtn.setImageResource(R.drawable.sing);
+            }else if(recodeButtonNum == 2){
+                elevenBtn.setImageResource(R.drawable.sing);
+            }else if(recodeButtonNum == 3){
+                twelveBtn.setImageResource(R.drawable.sing);
+            }else{
+                Log.d("MainActiviy","다른 버튼을 누름" + recodeButtonNum);
+            }
+            Log.d("MainActiviy" , "녹음한 버튼 번호 " + recodeButtonNum);
         }
     }
 
