@@ -88,7 +88,8 @@ public class MyMusicListAdapter extends RecyclerView.Adapter<MyMusicListAdapter.
                     if(playMode.equals("재생전")){
                         int pos = getAdapterPosition();
 
-                        playImgBtn.setImageResource(R.drawable.pause);
+                        //playImgBtn.setImageResource(R.drawable.pause);
+                        playImgBtn.setBackgroundResource(R.drawable.pause);
 
                         if (pos != RecyclerView.NO_POSITION) {
                             MyMusicData myMusic = mData.get(pos);
@@ -104,6 +105,9 @@ public class MyMusicListAdapter extends RecyclerView.Adapter<MyMusicListAdapter.
                     }else{
                         playMode = "재생전";
                         //playImgBtn.setImageResource(R.drawable.play);
+                        playImgBtn.setBackgroundResource(R.drawable.play);
+
+                        stopAudio();
                     }
 
                 }
