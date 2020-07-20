@@ -12,7 +12,7 @@ import java.io.File;
 
 public class AppContext {
 
-    private static final String SD_ROOT_PATH = "MusicNotePlus";
+    private static final String SD_ROOT_PATH = "HeungMaker";
 
     private static Application sApplication;
 
