@@ -20,19 +20,50 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.app.hackathon.dialog.MLoadingDialog;
+import com.app.hackathon.util.AppContext;
+import com.app.hackathon.util.AudioEncoder;
+import com.app.hackathon.util.ListUtils;
+import com.app.hackathon.util.MultiAudioMixer;
+import com.app.hackathon.util.PCMAnalyser;
+import com.app.hackathon.util.Project;
+import com.app.hackathon.util.Track;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
     String mode = "전통음악";
-    ImageView musicIV;
+    String recordMode = "녹음전";
+    ImageView musicIV, recordIV;
     ImageButton oneBtn, twoBtn, threeBtn, fourBtn, fiveBtn, sixBtn, sevenBtn, eightBtn, nineBtn, tenBtn, elevenBtn, twelveBtn;
-    Button changeBeatBtn, stopRecordBtn;
+    Button changeBeatBtn, recordBtn, stopRecordBtn;
 
     MediaRecorder recorder;
     MediaPlayer player;
-    int position = 0; // 다시 시작 기능을 위한 현재 재생 위치 확인 변수
+
+    private ArrayList<TrackHolder> trackHolderList = new ArrayList<>();
+    private TrackHolder recordingTrackHolder;
+
+    private MultiAudioMixer audioMixer = MultiAudioMixer.createAudioMixer();
+    private PCMAnalyser recordPcmAudioFile;
+    private MLoadingDialog saveRecordedFileDialog;
+    private Project project;
+
+    // 녹음중에 클릭한 음악 파일
+    private File recordingAudioFile;
+
+    // TODO : isPlayLoop / isRecording 이벤트 처리,
+    //  isRecording = true 이면 isPlayLoop = true
+    private boolean isRecording = false;
+    private boolean isPlayLoop = false;
+    private boolean isExporting;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -54,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
         twelveBtn = findViewById(R.id.twelve);
         changeBeatBtn = findViewById(R.id.changeBeat);
         musicIV = findViewById(R.id.musicImage);
+        recordBtn = findViewById(R.id.recordBtn);
+        recordIV = findViewById(R.id.recordImage);
         stopRecordBtn = findViewById(R.id.stopRecordBtn);
 
         //화면이 처음 켜졌을 때 로딩화면을 띄운다.
@@ -261,6 +294,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 녹음 버튼
+        recordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(recordMode.equals("녹음전")){
+                    recordIV.setImageResource(R.drawable.after_record);
+                    recordMode = "녹음중";
+                }else{
+                    recordMode = "녹음전";
+                    recordIV.setImageResource(R.drawable.before_record);
+                }
+
+                Log.d("MainActivity", recordMode);
+            }
+        });
+
+        // 현대/전통 음악 버튼
         changeBeatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -269,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
                     musicIV.setImageResource(R.drawable.img_music);
                     mode = "현대음악";
                 }else{
-                    mode = "전통음악";
+                    mode = "옛노래";
                     changeBeatBtn.setText("전통음악");
                     oldMusicPicture();
                     musicIV.setImageResource(R.drawable.img_jungganbo);
@@ -278,6 +328,125 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MainActivity", mode);
             }
         });
+    }
+
+    // 녹음이 끝난 후,
+    public void combineAudio() {
+        // 녹음한 음악 저장시, dialog
+        saveRecordedFileDialog = new MLoadingDialog.Builder(this)
+                .title("Exporting... It could take a few minutes.")
+                .canceledOnTouchOutside(false)
+                .progress(true, 0)
+                .progressIndeterminateStyle(true)
+                .build();
+    }
+
+
+    // 레코드 버튼 리스너
+    public void recordBtnListener() {
+        if(isRecording) {
+            // TODO : 분기문 추가해야함
+            // 음악 클릭하면, trackholder 등록 (example)
+            recordingAudioFile = new File("raw/ajaeng");
+            recordingTrackHolder = new TrackHolder(recordingAudioFile);
+            trackHolderList.add(recordingTrackHolder);
+
+            // 다시 클릭하면, 해제 (example)
+            recordingAudioFile = new File("raw/ajaeng");
+            recordingTrackHolder = new TrackHolder(recordingAudioFile);
+            for(TrackHolder trackHolder : trackHolderList) {
+                if(trackHolder.equals(recordingTrackHolder)) {
+                    trackHolderList.remove(trackHolder);
+                }
+            }
+        }
+        else {
+            // do nothing
+        }
+
+        //onExpertAudio();
+    }
+
+    private void onExpertAudio() {
+        if (!isExporting && ListUtils.isNotEmpty(trackHolderList)) {
+            saveRecordedFileDialog.show();
+            new ExpertThread().start();
+        }
+    }
+
+    class TrackHolder implements View.OnClickListener, View.OnLongClickListener {
+        Track track;
+        File audioFile;
+        List<Double> audioFrames = new ArrayList<>();
+        InputStream audioStream;
+
+        TrackHolder() { }
+
+        TrackHolder(File audioFile) {
+            this.audioFile = audioFile;
+        }
+
+        @Override
+        public void onClick(View v) {
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            return false;
+        }
+
+    }
+
+    private class ExpertThread extends Thread {
+
+        @Override
+        public void run() {
+            isExporting = true;
+
+            if (ListUtils.isEmpty(trackHolderList)) {
+                return;
+            }
+
+            File[] audioFiles = new File[trackHolderList.size()];
+
+            for (int i = 0, size = audioFiles.length; i != size; i++) {
+                audioFiles[i] = trackHolderList.get(i).audioFile;
+            }
+
+            try {
+                File tempMixAudioFile = new File(AppContext.getAudioTempPath(), UUID.randomUUID().toString());
+                final FileOutputStream mixTempOutStream = new FileOutputStream(tempMixAudioFile);
+                audioMixer.setOnAudioMixListener(new MultiAudioMixer.OnAudioMixListener() {
+
+                    @Override
+                    public void onMixing(byte[] mixBytes) throws IOException {
+                        mixTempOutStream.write(mixBytes);
+                    }
+
+                    @Override
+                    public void onMixError(int errorCode) {
+
+                    }
+
+                    @Override
+                    public void onMixComplete() {
+
+                    }
+                });
+
+                audioMixer.mixAudios(audioFiles, recordPcmAudioFile.bytesPerSample());
+                mixTempOutStream.close();
+
+                File outputFile = new File(AppContext.getAudioOutPath(), project.getName() + ".mp3");
+                int channelCount = trackHolderList.size();
+                AudioEncoder accEncoder = AudioEncoder.createAccEncoder(tempMixAudioFile, channelCount);
+                accEncoder.encodeToFile(outputFile);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            isExporting = false;
+        }
     }
 
     private void oldMusicPicture(){
@@ -294,7 +463,7 @@ public class MainActivity extends AppCompatActivity {
         elevenBtn.setImageResource(R.drawable.imgbtn_seoul_tower);
         twelveBtn.setImageResource(R.drawable.imgbtn_shoes);
     }
-    
+
     private void recordAudio(String filename) {
         recorder = new MediaRecorder();
 
@@ -339,13 +508,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "재생 시작됨.", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void closePlayer() {
-        if (player != null) {
-            player.release();
-            player = null;
         }
     }
 
