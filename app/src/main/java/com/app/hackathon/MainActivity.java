@@ -33,7 +33,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,17 +45,17 @@ public class MainActivity extends AppCompatActivity {
     String recordMode = "녹음전";
     ImageView musicIV, recordIV;
     ImageButton oneBtn, twoBtn, threeBtn, fourBtn, fiveBtn, sixBtn, sevenBtn, eightBtn, nineBtn, tenBtn, elevenBtn, twelveBtn;
-    Button changeBeatBtn, recordBtn, stopRecordBtn;
+    ImageButton stopRecordBtn;
+    Button changeBeatBtn, recordBtn;
 
     MediaRecorder recorder;
     MediaPlayer player;
 
-    private ArrayList<TrackHolder> trackHolderList = new ArrayList<>();
-    private TrackHolder recordingTrackHolder;
+    //private ArrayList<TrackHolder> trackHolderList = new ArrayList<>();
+    //private TrackHolder recordingTrackHolder;
 
     private MultiAudioMixer audioMixer = MultiAudioMixer.createAudioMixer();
-    private PCMAnalyser recordPcmAudioFile;
-    private MLoadingDialog saveRecordedFileDialog;
+    private PCMAnalyser recordPcmAudioFile = PCMAnalyser.createPCMAnalyser();
     private Project project;
 
     // 녹음중에 클릭한 음악 파일
@@ -100,10 +102,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.HAEGEUM);
-                    recordBtnListener("raw/haegeum");
+                    //recordBtnListener("raw/haegeum");
                 }else{
                     MySoundPlayer.play(MySoundPlayer.BOOM);
-                    recordBtnListener("raw/boom");
+                    //recordBtnListener("raw/boom");
                 }
             }
         });
@@ -113,10 +115,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.KKWAENGGWARI);
-                    recordBtnListener("raw/kkwaenggwari");
+                    //recordBtnListener("raw/kkwaenggwari");
                 }else{
                     MySoundPlayer.play(MySoundPlayer.BRIDGE);
-                    recordBtnListener("raw/bridge");
+                    //recordBtnListener("raw/bridge");
                 }
             }
         });
@@ -126,10 +128,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.PIPE);
-                    recordBtnListener("raw/pipe");
+                    //recordBtnListener("raw/pipe");
                 }else{
                     MySoundPlayer.play(MySoundPlayer.CLOSING);
-                    recordBtnListener("raw/closing");
+                    //recordBtnListener("raw/closing");
                 }
             }
         });
@@ -139,10 +141,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.KOREADRUM);
-                    recordBtnListener("raw/korea_drum");
+                    //recordBtnListener("raw/korea_drum");
                 }else{
                     MySoundPlayer.play(MySoundPlayer.DOOMCHIT);
-                    recordBtnListener("raw/doom_chit");
+                    //recordBtnListener("raw/doom_chit");
                 }
             }
         });
@@ -152,10 +154,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.AJAENG);
-                    recordBtnListener("raw/ajaeng");
+                    //recordBtnListener("raw/ajaeng");
                 }else{
                     MySoundPlayer.play(MySoundPlayer.DOOMDOOM);
-                    recordBtnListener("raw/doomdoom");
+                    //recordBtnListener("raw/doomdoom");
                 }
             }
         });
@@ -165,10 +167,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.GAYAGEUM);
-                    recordBtnListener("raw/gayageum");
+                    //recordBtnListener("raw/gayageum");
                 }else{
                     MySoundPlayer.play(MySoundPlayer.HORSE);
-                    recordBtnListener("raw/horse");
+                    //recordBtnListener("raw/horse");
                 }
             }
         });
@@ -178,10 +180,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.HMM);
-                    recordBtnListener("raw/hmm");
+                    //recordBtnListener("raw/hmm");
                 }else{
                     MySoundPlayer.play(MySoundPlayer.KOONGJAK);
-                    recordBtnListener("raw/koong_jak");
+                    //recordBtnListener("raw/koong_jak");
                 }
             }
         });
@@ -191,10 +193,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.JANGGU);
-                    recordBtnListener("raw/janggu");
+                    //recordBtnListener("raw/janggu");
                 }else{
                     MySoundPlayer.play(MySoundPlayer.PPAXING);
-                    recordBtnListener("raw/ppaxing");
+                    //recordBtnListener("raw/ppaxing");
                 }
             }
         });
@@ -204,16 +206,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
                     MySoundPlayer.play(MySoundPlayer.SONG);
-                    recordBtnListener("raw/song");
+                    //recordBtnListener("raw/song");
                 }else{
                     MySoundPlayer.play(MySoundPlayer.BEAT);
-                    recordBtnListener("raw/right_beat");
+                    //recordBtnListener("raw/right_beat");
                 }
             }
         });
 
         permissionCheck();
-        final File sdcard = Environment.getExternalStorageDirectory();
+        final File sdcard = AppContext.getAudioTempPath();
 
         tenBtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -318,17 +320,27 @@ public class MainActivity extends AppCompatActivity {
                     recordIV.setImageResource(R.drawable.after_record);
                     recordMode = "녹음중";
 
-                    isRecording = true;
+                    //isRecording = true;
                     //isPlayLoop = true;
 
+                    // 찍은 시간에 따른 파일 이름 설정
+                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HH.mm.ss").format(new Date());
+
+                    File output = AppContext.getAudioOutPath();
+                    File file = new File(output, "Output_" + timeStamp + ".mp3");
+                    String filename = file.getAbsolutePath();
+                    Log.d("MainActivity", "저장할 파일 명 : " + filename);
+                    recordAudio(filename);
                 }else{
                     recordMode = "녹음전";
                     recordIV.setImageResource(R.drawable.before_record);
 
-                    isRecording = false;
+                    //isRecording = false;
                     //isPlayLoop = false;
 
-                    onExpertAudio();
+                    //onExpertAudio();
+
+                    stopRecording();
                 }
 
                 Log.d("MainActivity", recordMode);
@@ -357,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 녹음이 끝난 후,
-    public void combineAudio() {
+    /*public void combineAudio() {
         // 녹음한 음악 저장시, dialog
         saveRecordedFileDialog = new MLoadingDialog.Builder(this)
                 .title("Exporting... It could take a few minutes.")
@@ -365,16 +377,16 @@ public class MainActivity extends AppCompatActivity {
                 .progress(true, 0)
                 .progressIndeterminateStyle(true)
                 .build();
-    }
+    }*/
 
-    // 레코드 버튼 리스너
+    /*// 레코드 버튼 리스너
     public void recordBtnListener(String filePathName) {
         if(isRecording) {
             Log.d("MainActivity", "녹음중");
 
             recordingAudioFile = new File(filePathName);
             recordingTrackHolder = new TrackHolder(recordingAudioFile);
-            trackHolderList.add(recordingTrackHolder);
+            trackHolderList.add(0, recordingTrackHolder);
         }
         else {
             Log.d("MainActivity", "녹음중 아님");
@@ -441,52 +453,87 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d("MainActivity", "임시 파일 생성");
 
-                File tempMixAudioFile = new File(AppContext.getAudioTempPath(), UUID.randomUUID().toString());
+                permissionCheck();
+                File tempMixAudioDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "HeungMaker" + File.separator + "Audio");
+
+                if(!tempMixAudioDirectory.exists()) {
+                    boolean isDirectoryCreated = tempMixAudioDirectory.mkdirs();
+                    Log.d("MainActivity", "audio 디렉토리 생성 성공/실패 : " + isDirectoryCreated);
+                }
+
+                File tempMixAudioFile = new File(tempMixAudioDirectory, UUID.randomUUID().toString());
+
+                boolean isFileCreated = tempMixAudioFile.createNewFile();
+
                 Log.d("MainActivity", tempMixAudioFile.toString());
 
-                // TODO : 시스템 에러 발생
-                final FileOutputStream mixTempOutStream = new FileOutputStream(tempMixAudioFile);
+                if(isFileCreated) {
+                    Log.d("MainActivity", "audio 파일 생성 성공");
 
-                Log.d("MainActivity", "임시파일 output stream에 입력");
+                    final FileOutputStream mixTempOutStream = new FileOutputStream(tempMixAudioFile);
 
-                audioMixer.setOnAudioMixListener(new MultiAudioMixer.OnAudioMixListener() {
-                    @Override
-                    public void onMixing(byte[] mixBytes) throws IOException {
-                        mixTempOutStream.write(mixBytes);
-                        Log.d("MainActivity", "onMixing");
+                    Log.d("MainActivity", "임시파일 output stream에 입력");
+
+                    audioMixer.setOnAudioMixListener(new MultiAudioMixer.OnAudioMixListener() {
+                        @Override
+                        public void onMixing(byte[] mixBytes) throws IOException {
+                            mixTempOutStream.write(mixBytes);
+                            Log.d("MainActivity", "onMixing");
+                        }
+
+                        @Override
+                        public void onMixError(int errorCode) {
+                            Log.d("MainActivity", "onMixError");
+                        }
+
+                        @Override
+                        public void onMixComplete() {
+                            Log.d("MainActivity", "onMixComplete");
+
+                        }
+                    });
+
+                    // TODO : 시스템 에러
+                    audioMixer.mixAudios(audioFiles, recordPcmAudioFile.bytesPerSample());
+                    Log.d("MainActivity", "audioMixer");
+
+                    mixTempOutStream.close();
+
+                    File outputDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "HeungMaker" + File.separator + "Output");
+                    if(!outputDirectory.exists()) {
+                        boolean isDirectoryCreated = outputDirectory.mkdirs();
+                        Log.d("MainActivity", "output 디렉토리 생성 성공/실패 : " + isDirectoryCreated);
                     }
 
-                    @Override
-                    public void onMixError(int errorCode) {
-                        Log.d("MainActivity", "onMixError");
+                    // 찍은 시간에 따른 파일 이름 설정
+                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HH.mm.ss").format(new Date());
+
+                    File outputFile = new File(outputDirectory, "Output_" + timeStamp + ".mp3");
+                    isFileCreated = outputFile.createNewFile();
+
+                    if(isFileCreated) {
+                        Log.d("MainActivity", "output 파일 생성 성공");
+
+                        int channelCount = trackHolderList.size();
+                        AudioEncoder accEncoder = AudioEncoder.createAccEncoder(tempMixAudioFile, channelCount);
+                        accEncoder.encodeToFile(outputFile);
+
+                        Log.d("MainActivity", "file encode and save");
                     }
-
-                    @Override
-                    public void onMixComplete() {
-                        Log.d("MainActivity", "onMixComplete");
-
+                    else {
+                        Log.d("MainActivity", "output 파일 생성 실패");
                     }
-                });
-
-                audioMixer.mixAudios(audioFiles, recordPcmAudioFile.bytesPerSample());
-                Log.d("MainActivity", "audioMixer");
-
-                mixTempOutStream.close();
-
-                File outputFile = new File(AppContext.getAudioOutPath(), project.getName() + "1.mp3");
-                int channelCount = trackHolderList.size();
-                AudioEncoder accEncoder = AudioEncoder.createAccEncoder(tempMixAudioFile, channelCount);
-                accEncoder.encodeToFile(outputFile);
-
-                Log.d("MainActivity", "file encode and save");
-
+                }
+                else {
+                    Log.d("MainActivity", "파일 생성 실패");
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
 
             isExporting = false;
         }
-    }
+    }*/
 
     private void oldMusicPicture(){
         oneBtn.setBackgroundColor(getResources().getColor(R.color.traditionalPink));
