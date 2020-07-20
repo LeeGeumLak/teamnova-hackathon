@@ -12,7 +12,6 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,24 +19,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.app.hackathon.dialog.MLoadingDialog;
 import com.app.hackathon.util.AppContext;
-import com.app.hackathon.util.AudioEncoder;
-import com.app.hackathon.util.ListUtils;
 import com.app.hackathon.util.MultiAudioMixer;
 import com.app.hackathon.util.PCMAnalyser;
 import com.app.hackathon.util.Project;
-import com.app.hackathon.util.Track;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,16 +44,16 @@ public class MainActivity extends AppCompatActivity {
     //private ArrayList<TrackHolder> trackHolderList = new ArrayList<>();
     //private TrackHolder recordingTrackHolder;
 
-    private MultiAudioMixer audioMixer = MultiAudioMixer.createAudioMixer();
+    /*private MultiAudioMixer audioMixer = MultiAudioMixer.createAudioMixer();
     private PCMAnalyser recordPcmAudioFile = PCMAnalyser.createPCMAnalyser();
-    private Project project;
+    private Project project;*/
 
     // 녹음중에 클릭한 음악 파일
-    private File recordingAudioFile;
+    //private File recordingAudioFile;
 
-    private boolean isRecording = false;
+    //private boolean isRecording = false;
     //private boolean isPlayLoop = false;
-    private boolean isExporting;
+    //private boolean isExporting;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -104,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     MySoundPlayer.play(MySoundPlayer.HAEGEUM);
                     //recordBtnListener("raw/haegeum");
                 }else{
-                    MySoundPlayer.play(MySoundPlayer.BOOM);
+                    MySoundPlayer.play(MySoundPlayer.CLOSINGG);
                     //recordBtnListener("raw/boom");
                 }
             }
@@ -117,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     MySoundPlayer.play(MySoundPlayer.KKWAENGGWARI);
                     //recordBtnListener("raw/kkwaenggwari");
                 }else{
-                    MySoundPlayer.play(MySoundPlayer.BRIDGE);
+                    MySoundPlayer.play(MySoundPlayer.STRIONGBEAT);
                     //recordBtnListener("raw/bridge");
                 }
             }
@@ -127,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
-                    MySoundPlayer.play(MySoundPlayer.PIPE);
+                    MySoundPlayer.play(MySoundPlayer.HEUNG);
                     //recordBtnListener("raw/pipe");
                 }else{
                     MySoundPlayer.play(MySoundPlayer.CLOSING);
@@ -156,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     MySoundPlayer.play(MySoundPlayer.AJAENG);
                     //recordBtnListener("raw/ajaeng");
                 }else{
-                    MySoundPlayer.play(MySoundPlayer.DOOMDOOM);
+                    MySoundPlayer.play(MySoundPlayer.SHINDY);
                     //recordBtnListener("raw/doomdoom");
                 }
             }
@@ -166,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
-                    MySoundPlayer.play(MySoundPlayer.GAYAGEUM);
+                    MySoundPlayer.play(MySoundPlayer.TRANSFERSTATION);
                     //recordBtnListener("raw/gayageum");
                 }else{
                     MySoundPlayer.play(MySoundPlayer.HORSE);
@@ -192,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
-                    MySoundPlayer.play(MySoundPlayer.JANGGU);
+                    MySoundPlayer.play(MySoundPlayer.TRANSFERPIPE);
                     //recordBtnListener("raw/janggu");
                 }else{
                     MySoundPlayer.play(MySoundPlayer.PPAXING);
