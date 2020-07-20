@@ -316,10 +316,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mode.equals("전통음악")){
                     changeBeatBtn.setText("현대음악");
+                    modernMusicPicture();
                     musicIV.setImageResource(R.drawable.img_music);
                     mode = "현대음악";
                 }else{
-                    mode = "옛노래";
+                    mode = "전통음악";
                     changeBeatBtn.setText("전통음악");
                     oldMusicPicture();
                     musicIV.setImageResource(R.drawable.img_jungganbo);
@@ -450,6 +451,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void oldMusicPicture(){
+        oneBtn.setBackgroundColor(getResources().getColor(R.color.traditionalPink));
+        twoBtn.setBackgroundColor(getResources().getColor(R.color.traditionalPink));
+        threeBtn.setBackgroundColor(getResources().getColor(R.color.traditionalPink));
+        fourBtn.setBackgroundColor(getResources().getColor(R.color.traditionalBeige));
+        fiveBtn.setBackgroundColor(getResources().getColor(R.color.traditionalBeige));
+        sixBtn.setBackgroundColor(getResources().getColor(R.color.traditionalBeige));
+        sevenBtn.setBackgroundColor(getResources().getColor(R.color.traditionalKhaki));
+        eightBtn.setBackgroundColor(getResources().getColor(R.color.traditionalKhaki));
+        nineBtn.setBackgroundColor(getResources().getColor(R.color.traditionalKhaki));
+        tenBtn.setBackgroundColor(getResources().getColor(R.color.traditionalGreen));
+        elevenBtn.setBackgroundColor(getResources().getColor(R.color.traditionalGreen));
+        twelveBtn.setBackgroundColor(getResources().getColor(R.color.traditionalGreen));
+
         oneBtn.setImageResource(R.drawable.imgbtn_bibimbap);
         twoBtn.setImageResource(R.drawable.imgbtn_building);
         threeBtn.setImageResource(R.drawable.imgbtn_duck);
@@ -462,6 +476,34 @@ public class MainActivity extends AppCompatActivity {
         tenBtn.setImageResource(R.drawable.imgbtn_seoraksan);
         elevenBtn.setImageResource(R.drawable.imgbtn_seoul_tower);
         twelveBtn.setImageResource(R.drawable.imgbtn_shoes);
+    }
+
+    private void modernMusicPicture(){
+        oneBtn.setBackgroundColor(getResources().getColor(R.color.modernBeige));
+        twoBtn.setBackgroundColor(getResources().getColor(R.color.modernBlue));
+        threeBtn.setBackgroundColor(getResources().getColor(R.color.modernPurple));
+        fourBtn.setBackgroundColor(getResources().getColor(R.color.modernGreen));
+        fiveBtn.setBackgroundColor(getResources().getColor(R.color.modernBlue));
+        sixBtn.setBackgroundColor(getResources().getColor(R.color.modernBeige));
+        sevenBtn.setBackgroundColor(getResources().getColor(R.color.modernPink));
+        eightBtn.setBackgroundColor(getResources().getColor(R.color.modernGreen));
+        nineBtn.setBackgroundColor(getResources().getColor(R.color.modernPurple));
+        tenBtn.setBackgroundColor(getResources().getColor(R.color.modernBeige));
+        elevenBtn.setBackgroundColor(getResources().getColor(R.color.modernPink));
+        twelveBtn.setBackgroundColor(getResources().getColor(R.color.modernBlue));
+
+        oneBtn.setImageResource(0);
+        twoBtn.setImageResource(0);
+        threeBtn.setImageResource(0);
+        fourBtn.setImageResource(0);
+        fiveBtn.setImageResource(0);
+        sixBtn.setImageResource(0);
+        sevenBtn.setImageResource(0);
+        eightBtn.setImageResource(0);
+        nineBtn.setImageResource(0);
+        tenBtn.setImageResource(0);
+        elevenBtn.setImageResource(0);
+        twelveBtn.setImageResource(0);
     }
 
     private void recordAudio(String filename) {
