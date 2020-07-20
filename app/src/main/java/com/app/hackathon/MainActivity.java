@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
         oldMusicPicture();
+        pleaseRecodeButtonImage();
 
         MySoundPlayer.initSounds(getApplicationContext());
 
@@ -215,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MainActivity", "저장할 파일 명 : " + filename);
                 recordAudio(filename);
                 stopRecordBtn.setVisibility(View.VISIBLE);
+                tenBtn.setImageResource(R.drawable.sing);
 
                 return false;
             }
@@ -244,6 +246,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MainActivity", "저장할 파일 명 : " + filename);
                 recordAudio(filename);
                 stopRecordBtn.setVisibility(View.VISIBLE);
+                elevenBtn.setImageResource(R.drawable.sing);
 
                 return false;
             }
@@ -273,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MainActivity", "저장할 파일 명 : " + filename);
                 recordAudio(filename);
                 stopRecordBtn.setVisibility(View.VISIBLE);
-
+                twelveBtn.setImageResource(R.drawable.sing);
                 return false;
             }
         });
@@ -548,9 +551,6 @@ public class MainActivity extends AppCompatActivity {
         sevenBtn.setImageResource(R.drawable.imgbtn_harubang);
         eightBtn.setImageResource(R.drawable.imgbtn_mask);
         nineBtn.setImageResource(R.drawable.imgbtn_pagoda);
-        tenBtn.setImageResource(R.drawable.imgbtn_seoraksan);
-        elevenBtn.setImageResource(R.drawable.imgbtn_seoul_tower);
-        twelveBtn.setImageResource(R.drawable.imgbtn_shoes);
     }
 
     private void modernMusicPicture(){
@@ -576,9 +576,12 @@ public class MainActivity extends AppCompatActivity {
         sevenBtn.setImageResource(0);
         eightBtn.setImageResource(0);
         nineBtn.setImageResource(0);
-        tenBtn.setImageResource(0);
-        elevenBtn.setImageResource(0);
-        twelveBtn.setImageResource(0);
+    }
+
+    private void pleaseRecodeButtonImage(){
+        tenBtn.setImageResource(R.drawable.buttontext);
+        elevenBtn.setImageResource(R.drawable.buttontext);
+        twelveBtn.setImageResource(R.drawable.buttontext);
     }
 
     private void recordAudio(String filename) {
