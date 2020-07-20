@@ -1,11 +1,13 @@
 package com.app.hackathon;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
@@ -15,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -40,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
     MediaRecorder recorder;
     MediaPlayer player;
+
+    EditText et;
 
     //private ArrayList<TrackHolder> trackHolderList = new ArrayList<>();
     //private TrackHolder recordingTrackHolder;
@@ -321,7 +326,15 @@ public class MainActivity extends AppCompatActivity {
                     String timeStamp = new SimpleDateFormat("yyyyMMdd_HH.mm.ss").format(new Date());
 
                     File output = AppContext.getAudioOutPath();
-                    File file = new File(output, "Output_" + timeStamp + ".mp3");
+                    File file;
+                    if(mode.equals("현대음악")) {
+                        file = new File(output, "내가 만든 신나는 음악.mp3");
+                    }
+                    else {
+                        file = new File(output, "내가 만든 흥나는 음악.mp3");
+                    }
+
+//                    File file = new File(output, "Output_" + timeStamp + ".mp3");
                     String filename = file.getAbsolutePath();
                     Log.d("MainActivity", "저장할 파일 명 : " + filename);
                     recordAudio(filename);
@@ -335,9 +348,42 @@ public class MainActivity extends AppCompatActivity {
                     //onExpertAudio();
 
                     stopRecording();
-                }
 
-                Log.d("MainActivity", recordMode);
+                    /*AlertDialog.Builder ad = new AlertDialog.Builder(MainActivity.this);
+
+                    ad.setTitle("원하시는 파일 이름을 입력하세요");       // 제목 설정
+                    ad.setMessage("입력하지 않으면, 날짜/시간으로 이름이 정해집니다.");
+                    // EditText 삽입하기
+                    et = new EditText(MainActivity.this);
+                    ad.setView(et);
+
+                    // 확인 버튼 설정
+                    ad.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            // Text 값 받아서 로그 남기기
+                            String value = et.getText().toString();
+
+                            dialog.dismiss();     //닫기
+                            // Event
+
+                            Toast.makeText(MainActivity.this, "'" + et.getText() + "' 으로 설정완료", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    // 취소 버튼 설정
+                    ad.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();     //닫기
+
+                            Toast.makeText(MainActivity.this, "날짜/시간으로 이름이 정해집니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    // 창 띄우기
+                    ad.show();*/
+                }
             }
         });
 
@@ -604,8 +650,8 @@ public class MainActivity extends AppCompatActivity {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC); // 어디에서 음성 데이터를 받을 것인지
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4); // 압축 형식 설정
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-
         recorder.setOutputFile(filename);
+
 
         try {
             recorder.prepare();
